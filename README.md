@@ -73,6 +73,20 @@ To run the PDF2Audio app:
 
 4. Use the Gradio interface to upload a PDF file and convert it to audio.
 
+## Docker
+
+1. **Build**
+   ```bash
+   docker build -t pdf2audio .
+   ```
+
+2. **Run**
+   ```bash
+   docker run -p 7860:7860 pdf2audio
+   ```
+
+3. **Access the Gradio interface:** `http://localhost:7860`.
+
 ## How to Use
 
 1. Upload one or more PDF files
@@ -118,4 +132,3 @@ This project was inspired by and based on the code available at [https://github.
     url={http://iopscience.iop.org/article/10.1088/2632-2153/ad7228},
 }
 ```
-
