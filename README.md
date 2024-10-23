@@ -82,7 +82,7 @@ To run the PDF2Audio app:
 
 2. **Run**
    ```bash
-   docker run -p 7860:7860 pdf2audio
+   docker run -d -p 7860:7860 --name pdf2audio pdf2audio
    ```
 
 3. **Access the Gradio interface:** `http://localhost:7860`.
