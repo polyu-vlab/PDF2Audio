@@ -489,9 +489,10 @@ class Dialogue(BaseModel):
     scratchpad: str
     dialogue: List[DialogueItem]
 
-def get_mp3(text: str, voice: str, audio_model: str, api_key: str = None) -> bytes:
+def get_mp3(text: str, voice: str, audio_model: str, api_key: str = None, api_base: str = None) -> bytes:
     client = OpenAI(
         api_key=api_key or os.getenv("OPENAI_API_KEY"),
+        base_url=api_base or os.getenv("OPENAI_BASE_URL"),
     )
 
     with client.audio.speech.with_streaming_response.create(
@@ -515,7 +516,7 @@ def conditional_llm(model, api_base=None, api_key=None):
     """
     def decorator(func):
         if api_base:
-            return llm(model=model, api_base=api_base)(func)
+            return llm(model=model, api_base=api_base, api_key=api_key)(func)
         else:
             return llm(model=model, api_key=api_key)(func)
     return decorator
@@ -614,7 +615,7 @@ def generate_audio(
         for line in llm_output.dialogue:
             transcript_line = f"{line.speaker}: {line.text}"
             voice = speaker_1_voice if line.speaker == "speaker-1" else speaker_2_voice
-            future = executor.submit(get_mp3, line.text, voice, audio_model, openai_api_key)
+            future = executor.submit(get_mp3, line.text, voice, audio_model, openai_api_key, api_base)
             futures.append((future, transcript_line))
             characters += len(line.text)
 
